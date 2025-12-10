@@ -101,7 +101,7 @@
     .btn-cancel { background: #f0f0f0; color: #333; }
     .btn-line { background: #06C755; color: white; width: 100%; display: block; text-decoration: none; padding: 12px; box-sizing: border-box; }
     
-    /* ✅ แก้ไข 2: ปรับ CSS ปุ่มเลือกชำระเงินไม่ให้ล้น และใช้ Flexbox แทน Float */
+    /* Payment Choice Buttons */
     .pay-choice-btn { display: block; width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 12px; border: 2px solid #E1E8F5; background: white; text-align: left; cursor: pointer; transition: 0.2s; position: relative; }
     .pay-choice-btn:hover { border-color: #0072FF; background: #F0F9FF; }
     /* ใช้ Flexbox จัด title กับ badge */
@@ -110,6 +110,44 @@
     /* ปรับ Badge ให้ไม่ลอย (Float) */
     .pay-choice-badge { background: #FF4D4F; color: white; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 5px rgba(255, 77, 79, 0.3); white-space: nowrap; }
     .pay-choice-btn.recommended { border: 2px solid #0072FF; background: #F4F9FF; box-shadow: 0 4px 10px rgba(0,114,255,0.15); }
+
+    /* ✅ แก้ไข 3: ปรับแต่งปุ่มในหน้า Success */
+    .line-btn { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      width: 100%; 
+      text-decoration: none; 
+      padding: 16px 0; 
+      border-radius: 50px; 
+      font-weight: 700; 
+      font-size: 18px;
+      margin-bottom: 15px; 
+      transition: all 0.3s ease; 
+      cursor: pointer; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      gap: 10px;
+    }
+    .btn-main { 
+      background: linear-gradient(90deg, #06C755, #00B900); 
+      color: white; 
+      box-shadow: 0 8px 20px rgba(6, 199, 85, 0.4); 
+      border: none;
+    }
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(6, 199, 85, 0.5);
+    }
+    .btn-sec { 
+      background: white; 
+      color: #555; 
+      border: 1px solid #E1E8F5; 
+    }
+    .btn-sec:hover {
+      background: #F0F6FF;
+      color: #003B8E;
+      border-color: #003B8E;
+    }
 
     /* Checkmark */
     .checkmark-wrapper { width: 100px; height: 100px; margin: 0 auto 20px; }
@@ -290,8 +328,15 @@
     </div>
     <h2 style="color:#003B8E; margin-bottom:10px;">ดำเนินการสำเร็จ!</h2>
     <p style="color:#666; font-size:14px; margin-bottom:30px;" id="success-msg">ระบบได้รับข้อมูลเรียบร้อยแล้ว</p>
-    <a href="https://line.me/ti/g/fmMXxuHaw-" class="line-btn btn-main" target="_blank" id="btn-line-group">เข้ากลุ่มไลน์ (Click)</a>
-    <a href="#" onclick="location.reload()" class="line-btn btn-sec">กลับหน้าหลัก</a>
+    
+    <!-- ✅ แก้ไข 4: ปรับ HTML ปุ่มให้รองรับ Style ใหม่ -->
+    <a href="https://line.me/ti/g/fmMXxuHaw-" class="line-btn btn-main" target="_blank" id="btn-line-group">
+      <i class="fab fa-line" style="font-size: 24px;"></i> เข้ากลุ่มไลน์ (Click)
+    </a>
+
+    <a href="#" onclick="location.reload()" class="line-btn btn-sec">
+      <i class="fas fa-home"></i> ลงทะเบียนเพิ่ม / กลับหน้าหลัก
+    </a>
   </div>
 
   <script>
