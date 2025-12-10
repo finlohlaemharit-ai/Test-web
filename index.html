@@ -457,24 +457,94 @@
     }
 
     function submitForm(isForceUpdate = false) {
-      const phoneInput = document.getElementById('phone').value.trim();
-      let positionValue = document.getElementById('position').value;
-      if (positionValue === 'อื่นๆ') positionValue = document.getElementById('other_position').value.trim();
+      // 1. Validate Day (ตรวจสอบวันเรียน)
+      if (!selectedData.day) {
+        alert("⚠️ กรุณาเลือก 'วันเรียน' ที่สะดวก");
+        document.getElementById('section-day').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      // 2. Validate Time (ตรวจสอบเวลาเรียน)
+      if (!selectedData.time) {
+        alert("⚠️ กรุณาเลือก 'เวลาเรียน' ที่สะดวก");
+        document.getElementById('section-time').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
 
+      // 3. Validate Inputs (ตรวจสอบช่องกรอกข้อมูลทีละช่อง)
+      const phoneInput = document.getElementById('phone');
+      const fullnameInput = document.getElementById('fullname');
+      const emailInput = document.getElementById('email');
+      const lineidInput = document.getElementById('lineid');
+      const branchInput = document.getElementById('branch');
+      const positionInput = document.getElementById('position');
+      const otherPosInput = document.getElementById('other_position');
+
+      // ตรวจเบอร์โทร
+      if (!phoneInput.value.trim() || phoneInput.value.trim().length !== 10) {
+        alert("⚠️ กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง (10 หลัก)");
+        phoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        phoneInput.focus();
+        return;
+      }
+      // ตรวจชื่อ
+      if (!fullnameInput.value.trim()) {
+        alert("⚠️ กรุณากรอกชื่อ-นามสกุล");
+        fullnameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        fullnameInput.focus();
+        return;
+      }
+      // ตรวจอีเมล
+      if (!emailInput.value.trim()) {
+        alert("⚠️ กรุณากรอกอีเมล");
+        emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        emailInput.focus();
+        return;
+      }
+      // ตรวจ LINE ID
+      if (!lineidInput.value.trim()) {
+        alert("⚠️ กรุณากรอก LINE ID");
+        lineidInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        lineidInput.focus();
+        return;
+      }
+      // ตรวจสาขา
+      if (!branchInput.value.trim()) {
+        alert("⚠️ กรุณาระบุสาขา");
+        branchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        branchInput.focus();
+        return;
+      }
+      // ตรวจตำแหน่ง
+      if (!positionInput.value) {
+        alert("⚠️ กรุณาเลือกตำแหน่ง");
+        positionInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        positionInput.focus();
+        return;
+      }
+      
+      // ตรวจตำแหน่งอื่นๆ (ถ้าเลือก)
+      let finalPosition = positionInput.value;
+      if (finalPosition === 'อื่นๆ') {
+        if(!otherPosInput.value.trim()) {
+            alert("⚠️ กรุณาระบุตำแหน่งของคุณ");
+            otherPosInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            otherPosInput.focus();
+            return;
+        }
+        finalPosition = otherPosInput.value.trim();
+      }
+
+      // เตรียมข้อมูลส่ง (ถ้าผ่านหมดแล้ว)
       const form = {
-        fullname: document.getElementById('fullname').value.trim(),
-        phone: phoneInput,
-        email: document.getElementById('email').value.trim(),
-        lineid: document.getElementById('lineid').value.trim(),
-        branch: document.getElementById('branch').value.trim(),
-        position: positionValue,
+        fullname: fullnameInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        email: emailInput.value.trim(),
+        lineid: lineidInput.value.trim(),
+        branch: branchInput.value.trim(),
+        position: finalPosition,
         day: selectedData.day,
         time: selectedData.time
       };
-      if(!form.day) return alert("⚠️ กรุณาเลือก 'วันเรียน'");
-      if(!form.time) return alert("⚠️ กรุณาเลือก 'เวลาเรียน'");
-      if(!form.phone || form.phone.length !== 10) return alert("⚠️ เบอร์โทรต้องมี 10 หลัก");
-      if(!form.fullname || !form.email || !form.lineid || !form.branch || !positionValue) return alert("⚠️ กรุณากรอกข้อมูลให้ครบ");
 
       document.getElementById('loading').style.display = 'flex';
       fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: 'register', form: form, forceUpdate: isForceUpdate, paymentType: 'pending_choice' }) })
@@ -483,7 +553,7 @@
         
         // Strict Check: ถ้าเจอข้อมูลซ้ำ ให้ไป Check Status อย่างเดียว
         if (res.status === "EXISTING_DATA") {
-            showModal('existing_data_redirect', null, { phone: phoneInput });
+            showModal('existing_data_redirect', null, { phone: form.phone });
         }
         else if (res.rowid) {
             globalRowID = res.rowid; globalFullPrice = res.price;
