@@ -291,7 +291,7 @@
 
   <script>
     // ⚠️ นำ URL ใหม่จากการ Deploy มาใส่ที่นี่
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxgWNubDDRevspD7gTPeS7xPVm8Zt4wGlG81dJYWP0c_4eg3A8qWyxjqbvUiFQFjhuFxQ/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby1gM2kIAZGp2DTGvJPzlCPCOPI5D3dPmEfNo2ZcYT_VMOvgKqRjJ9PNweiohc7Poey/exec";
 
     let selectedData = { day: "", time: "" };
     let globalRowID = null;
@@ -571,7 +571,14 @@
       document.getElementById('price-early').innerText = cfg.priceEarly.toLocaleString() + ".-";
       document.getElementById('price-normal').innerText = cfg.priceNormal.toLocaleString() + ".-";
       const tSuper = document.getElementById('tier-super'), tEarly = document.getElementById('tier-early'), tNormal = document.getElementById('tier-normal');
+      
+      // Reset classes
       [tSuper, tEarly, tNormal].forEach(e => e.className = 'tier-item future');
+
+      // Reset Badges (ป้องกันการเพิ่มซ้ำ)
+      tSuper.querySelector('span:first-child').innerHTML = 'Super Early Bird';
+      tEarly.querySelector('span:first-child').innerHTML = 'Early Bird';
+      tNormal.querySelector('span:first-child').innerHTML = 'ราคาปกติ';
       
       // Logic Limit
       if (paid < cfg.superLimit) { 
