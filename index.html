@@ -347,13 +347,14 @@
 
   <script>
     // ⚠️ นำ URL ใหม่จากการ Deploy มาใส่ที่นี่
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxPfVvX7gX8lI9pPiMBEG28FvXQdQQbu294ipUGyfSDtLc7aIC5E4rM7ZJ1cKyt0GrF/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxX0yXjoF-DodKaU2xUV06IZ2k4_NpFZtsD_9aLxXfCdW5xW_DCB03aqsTH3cDyaMZb/exec";
 
     let selectedData = { day: "", time: "" };
     let globalRowID = null;
     let globalFullPrice = 0;
     let globalConfig = null;
     let currentPaymentType = 'full';
+    let isEditingBooking = false; 
 
     window.onload = function() {
       fetch(WEB_APP_URL + "?action=getStats").then(res => res.json()).then(renderStats).catch(console.warn);
@@ -726,11 +727,11 @@ function checkStatus() {
 function editBookingInfo(data) {
     document.getElementById('custom-modal-overlay').style.display = 'none';
     isEditingBooking = true; // ตั้งค่าว่ากำลังแก้ไข
-    currentPaymentType = 'remaining'; // ตั้งค่ารอไว้ว่าถ้า save เสร็จจะจ่ายส่วนที่เหลือ
+    currentPaymentType = 'remaining'; 
 
     // 1. Fill Text Inputs
-    document.getElementById('phone').value = document.getElementById('search-phone').value; // ใช้ค่าที่ค้นหา
-    document.getElementById('phone').readOnly = true; // ⚠️ ห้ามแก้เบอร์ (เพื่อให้บันทึกลงแถวเดิมได้ถูกต้อง)
+    document.getElementById('phone').value = document.getElementById('search-phone').value;
+    document.getElementById('phone').readOnly = true; 
     document.getElementById('phone').style.backgroundColor = "#eee";
 
     document.getElementById('fullname').value = data.fullname || "";
@@ -751,16 +752,12 @@ function editBookingInfo(data) {
     }
 
     // 3. Select Day & Time (UI)
-    // Reset active classes first
     document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('active'));
     
-    // Auto Select Logic (ต้องเรียกข้อมูล config ก่อน ซึ่งปกติโหลดมาแล้วตอน onload)
     if(globalConfig) {
-        // Map ค่า Day กลับไปเป็น A หรือ B
         if(data.day === globalConfig.config.labelDayA) selectDay('A', document.querySelectorAll('.choice-group')[0].children[0]);
         else if(data.day === globalConfig.config.labelDayB) selectDay('B', document.querySelectorAll('.choice-group')[0].children[1]);
         
-        // Map ค่า Time กลับไปเป็น 1 หรือ 2
         if(data.time === globalConfig.config.labelTime1) selectTime('1', document.querySelectorAll('.choice-group')[1].children[0]);
         else if(data.time === globalConfig.config.labelTime2) selectTime('2', document.querySelectorAll('.choice-group')[1].children[1]);
     }
@@ -770,6 +767,9 @@ function editBookingInfo(data) {
     btn.innerHTML = '<i class="fas fa-save"></i> บันทึกการแก้ไข & ไปชำระเงิน';
     btn.style.background = "linear-gradient(90deg, #FFC107, #FF9800)";
     
+    // ✅✅ แก้ไขตรงนี้: เปลี่ยน onclick ให้ส่งค่า true (forceUpdate)
+    btn.setAttribute('onclick', 'submitForm(true)'); 
+    
     // 5. Scroll to form
     document.getElementById('section-day').scrollIntoView({ behavior: 'smooth' });
     alert("✏️ กรุณาแก้ไขข้อมูลให้ถูกต้อง แล้วกดปุ่มบันทึกด้านล่าง");
@@ -778,18 +778,11 @@ function editBookingInfo(data) {
 // --------------------------------------------------------
 // 3. อัปเดต submitForm: รองรับ flow การแก้ไข Booking
 // --------------------------------------------------------
-function submitForm(isForceUpdate = false) {
-    // ... (Validation Code ส่วนแรกเหมือนเดิมเป๊ะ ไม่ต้องแก้) ...
-    // ... (Copy validation เดิมมาใส่ หรือใช้ของเดิมได้เลย) ...
-    
-    // --- ส่วน Validation เดิม (ย่อ) ---
-    if (!selectedData.day) { alert("⚠️ กรุณาเลือก 'วันเรียน'"); return; }
-    if (!selectedData.time) { alert("⚠️ กรุณาเลือก 'เวลาเรียน'"); return; }
-    const phoneInput = document.getElementById('phone');
-    // ... Validate inputs ...
-    // -----------------------------
+function submitForm(isForceUpdate = false) { // รับค่า isForceUpdate
+    // ... (Validation Code เหมือนเดิม) ...
 
     const form = {
+        // ... (เก็บค่าเข้า object form เหมือนเดิม) ...
         fullname: document.getElementById('fullname').value.trim(),
         phone: document.getElementById('phone').value.trim(),
         email: document.getElementById('email').value.trim(),
@@ -802,39 +795,45 @@ function submitForm(isForceUpdate = false) {
 
     document.getElementById('loading').style.display = 'flex';
     
-    // ✅ ถ้าเป็นการแก้ไข Booking ให้ใช้ action register เหมือนเดิม GAS จะเช็คเบอร์แล้ว update ทับแถวเดิม
-    // และเราบังคับ paymentType เป็น 'remaining' ไว้รอ
+    // ถ้ากำลังแก้ไข ให้ PaymentType เป็น remaining ไว้ก่อน
     const pType = isEditingBooking ? 'remaining' : 'pending_choice';
 
-    fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: 'register', form: form, forceUpdate: isForceUpdate, paymentType: pType }) })
+    // ส่ง request
+    fetch(WEB_APP_URL, { 
+        method: 'POST', 
+        body: JSON.stringify({ 
+            action: 'register', 
+            form: form, 
+            forceUpdate: isForceUpdate, // ✅ ต้องแน่ใจว่าค่านี้เป็น true เมื่อกดปุ่มแก้ไข
+            paymentType: pType 
+        }) 
+    })
     .then(res => res.json()).then(res => {
         document.getElementById('loading').style.display = 'none';
         
         if (res.status === "EXISTING_DATA") {
-             // ถ้าเจอซ้ำแต่ไม่ใช่โหมดแก้ (เช่น user กรอกใหม่เอง)
+             // กรณีที่ไม่ได้กดแก้ไข แต่ User กรอกเบอร์ซ้ำเฉยๆ
              showModal('existing_data_redirect', null, { phone: form.phone });
         }
         else if (res.rowid) {
             globalRowID = res.rowid; 
             globalFullPrice = res.price;
 
-            // ✅ LOGIC ใหม่: ถ้าเป็นการแก้ไข Booking บันทึกเสร็จให้ไปหน้าจ่ายเงินส่วนที่เหลือเลย
+            // ✅ ถ้าเป็นการแก้ไข Booking บันทึกเสร็จให้ไปหน้าจ่ายเงินส่วนที่เหลือเลย
             if (isEditingBooking) {
-                // คำนวณยอดที่เหลือใหม่ (เผื่อราคาเปลี่ยน หรือใช้ราคาเดิม)
-                // เพื่อความชัวร์ ใช้ checkStatus อีกรอบเพื่อเอายอดคงเหลือล่าสุด หรือคำนวณ manual
-                // ในที่นี้ขอคำนวณ manual เพื่อความไว โดยสมมติว่าจ่ายไปแล้ว 20%
-                
-                // แต่เพื่อให้แม่นยำที่สุด เราจะเรียก setupPaymentPage ด้วยยอด remaining จากการคำนวณ
-                // (ปกติ GAS register ไม่คืน remaining มาให้ใน response นี้ แต่เราคำนวณเองได้หรือ fetch ใหม่)
-                // เพื่อความง่าย -> ไปเรียก checkStatus อีกรอบเงียบๆ แล้ว redirect ไป
-                
+                // เรียกฟังก์ชันเพื่อไปหน้าจ่ายเงิน
                 checkStatusAndRedirectToPay(form.phone);
             } else {
-                // Flow ปกติ (คนใหม่)
+                // Flow ปกติ (ลูกค้าใหม่) -> ให้เลือกวิธีจ่ายเงิน
                 showModal('payment_choice', null, { price: globalFullPrice });
             }
-        } else alert("Error: " + res.message);
-    }).catch(err => { document.getElementById('loading').style.display = 'none'; alert("Error: " + err.message); });
+        } else {
+             alert("Error: " + res.message);
+        }
+    }).catch(err => { 
+        document.getElementById('loading').style.display = 'none'; 
+        alert("Error: " + err.message); 
+    });
 }
 
 // ฟังก์ชันเสริมช่วย Redirect หลังแก้เสร็จ
