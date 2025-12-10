@@ -218,8 +218,9 @@
     <!-- Forms -->
     <div class="section-title" id="section-day">📅 เลือกวันเรียน <span class="required">*</span></div>
     <div class="choice-group" style="margin-bottom: 20px;">
-      <div class="choice-btn" onclick="selectDay('A', this)"><span class="choice-title" id="ui-day-a">กำลังโหลด...</span><span class="choice-desc">วันพุธ ถึง วันอาทิตย์</span></div>
-      <div class="choice-btn" onclick="selectDay('B', this)"><span class="choice-title" id="ui-day-b">กำลังโหลด...</span><span class="choice-desc">วันจันทร์ ถึง วันศุกร์</span></div>
+      <!-- ✅ เพิ่ม ID เพื่อรับค่าจาก GAS -->
+      <div class="choice-btn" onclick="selectDay('A', this)"><span class="choice-title" id="ui-day-a">กำลังโหลด...</span><span class="choice-desc" id="ui-desc-a">กำลังโหลด...</span></div>
+      <div class="choice-btn" onclick="selectDay('B', this)"><span class="choice-title" id="ui-day-b">กำลังโหลด...</span><span class="choice-desc" id="ui-desc-b">กำลังโหลด...</span></div>
     </div>
 
     <div class="section-title" id="section-time">⏰ เลือกเวลาเรียน <span class="required">*</span></div>
@@ -295,7 +296,7 @@
 
   <script>
     // ⚠️ นำ URL ใหม่จากการ Deploy มาใส่ที่นี่
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby1gM2kIAZGp2DTGvJPzlCPCOPI5D3dPmEfNo2ZcYT_VMOvgKqRjJ9PNweiohc7Poey/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwSchScDSTi0LUZesvTAMJLF3C3f66jAh3yHQOfat10TrZ58Bw8JudacLUzw-ySHk3_/exec";
 
     let selectedData = { day: "", time: "" };
     let globalRowID = null;
@@ -315,7 +316,9 @@
     function renderConfig(cfg) {
         if(!cfg) return;
         document.getElementById('ui-day-a').innerText = "A) " + cfg.labelDayA;
+        document.getElementById('ui-desc-a').innerText = cfg.descDayA; // ✅ แสดงผลรายละเอียดวัน A
         document.getElementById('ui-day-b').innerText = "B) " + cfg.labelDayB;
+        document.getElementById('ui-desc-b').innerText = cfg.descDayB; // ✅ แสดงผลรายละเอียดวัน B
         document.getElementById('ui-time-1').innerText = "⏰ " + cfg.labelTime1;
         document.getElementById('ui-time-2').innerText = "⏰ " + cfg.labelTime2;
         document.getElementById('lbl-stat-day-a').innerText = cfg.labelDayA;
