@@ -1,1 +1,854 @@
-กดกด
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ลงทะเบียน AI Content Bootcamp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { font-family: "Prompt", sans-serif; background: #F0F6FF; color: #003B8E; margin: 0; padding-bottom: 40px; }
+    .container { max-width: 550px; margin: auto; padding: 20px; box-sizing: border-box; }
+    
+    /* --- NEW: Search Box Style (ตามรูปภาพ) --- */
+    .search-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border-left: 6px solid #0072FF; /* แถบสีน้ำเงินด้านซ้าย */
+        position: relative;
+    }
+    .search-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #003B8E;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .search-box-wrapper {
+        display: flex;
+        gap: 10px;
+    }
+    .search-input {
+        flex: 1;
+        padding: 12px 15px;
+        border: 1px solid #E1E8F5;
+        border-radius: 8px;
+        font-family: "Prompt";
+        font-size: 14px;
+        outline: none;
+    }
+    .search-input:focus { border-color: #0072FF; }
+    .search-btn {
+        background: #0072FF;
+        color: white;
+        border: none;
+        padding: 0 20px;
+        border-radius: 8px;
+        font-family: "Prompt";
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+    .search-btn:hover { background: #005bb5; }
+
+    /* --- Existing Styles --- */
+    .banner { width: 100%; border-radius: 16px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,59,142,0.2); background: linear-gradient(135deg, #00C6FF, #0072FF); color: white; text-align: center; padding: 40px 20px; box-sizing: border-box; }
+    .banner h1 { margin: 0; font-size: 26px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1.3; }
+    .banner p { margin: 8px 0 0; opacity: 0.95; font-size: 15px; font-weight: 300; }
+    .logo-badge { background: rgba(255,255,255,0.25); padding: 6px 14px; border-radius: 20px; font-size: 13px; margin-bottom: 12px; display: inline-block; backdrop-filter: blur(5px); }
+    .card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); margin-bottom: 20px; }
+    .section-title { font-size: 18px; font-weight: 700; margin: 30px 0 12px; padding-left: 10px; border-left: 5px solid #00C6FF; line-height: 1; color: #003B8E; }
+    .tech-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 25px; }
+    .tech-badge { background: white; border: 1px solid #E6F7FF; color: #0072FF; padding: 8px 14px; border-radius: 50px; font-size: 13px; font-weight: 500; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+    .agenda-toggle-btn { background: white; color: #003B8E; width: 100%; padding: 15px 20px; border: none; border-radius: 12px; font-family: "Prompt", sans-serif; font-size: 16px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.3s ease; margin-bottom: 25px; }
+    .agenda-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: white; border-radius: 0 0 12px 12px; margin-top: -30px; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; z-index: 1; }
+    .agenda-content.show { max-height: 500px; margin-top: -20px; }
+    .agenda-list { padding: 20px; list-style: none; margin: 0; }
+    .agenda-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #eee; font-size: 14px; display: flex; align-items: flex-start; }
+    .agenda-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .day-badge { background: #E6F7FF; color: #0072FF; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-right: 10px; font-size: 12px; min-width: 45px; text-align: center; }
+    .stats-row { margin-bottom: 14px; }
+    .stats-label { font-size: 14px; margin-bottom: 6px; display: flex; justify-content: space-between; color: #444; }
+    .stat-max { color: #FF0000 !important; font-weight: 800 !important; font-size: 16px !important; }
+    .progress-bg { background: #E1E8F5; height: 12px; border-radius: 6px; overflow: hidden; }
+    .progress-fill { background: linear-gradient(90deg, #00C6FF, #0072FF); height: 100%; width: 0%; transition: width 1s ease; border-radius: 6px; }
+    .choice-group { display: flex; flex-direction: column; gap: 12px; }
+    .choice-btn { border: 2px solid #E1E8F5; padding: 18px; border-radius: 14px; background: white; cursor: pointer; text-align: left; transition: all 0.2s; position: relative; }
+    .choice-btn:hover { border-color: #00C6FF; }
+    .choice-btn.active { border-color: #0072FF; background: #F0F9FF; box-shadow: 0 4px 12px rgba(0,114,255,0.15); }
+    .choice-btn.active::after { content: '\f00c'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #0072FF; font-size: 18px; }
+    .choice-title { font-weight: 700; font-size: 16px; display: block; color: #003B8E; margin-bottom: 4px; }
+    .choice-desc { font-size: 13px; color: #666; font-weight: 400; }
+    .form-group { margin-bottom: 18px; }
+    .input-label { display: block; margin-bottom: 8px; font-size: 15px; font-weight: 600; color: #003B8E; }
+    .required { color: #FF4D4F; margin-left: 4px; font-size: 16px; }
+    input, select { width: 100%; padding: 16px; border: 1px solid #E1E8F5; border-radius: 12px; font-size: 16px; font-family: "Prompt"; background: #FAFCFF; box-sizing: border-box; outline: none; transition: 0.3s; color: #333; }
+    input:focus, select:focus { border-color: #0072FF; background: white; box-shadow: 0 0 0 3px rgba(0,114,255,0.1); }
+    .submit-btn { width: 100%; background: linear-gradient(90deg, #0072FF, #00C6FF); color: white; border: none; padding: 18px; font-size: 18px; font-weight: 700; border-radius: 50px; cursor: pointer; box-shadow: 0 8px 25px rgba(0,114,255,0.35); margin-top: 15px; transition: transform 0.2s; }
+    .submit-btn:active { transform: scale(0.98); }
+    .tier-container { background: #fff; border: 1px solid #E1E8F5; border-radius: 16px; overflow: hidden; margin-bottom: 25px; text-align: left; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+    .tier-item { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #888; position: relative; transition: all 0.3s; }
+    .tier-item:last-child { border-bottom: none; }
+    .tier-item.active { background: #E6F7FF; color: #003B8E; font-weight: 700; border-left: 6px solid #0072FF; }
+    .tier-item.sold-out { background: #fcfcfc; color: #ccc; }
+    .tier-item.sold-out span:first-child { text-decoration: line-through; }
+    .badge-stock { background: linear-gradient(135deg, #FF4D4F, #FF7875); color: white; font-size: 12px; padding: 4px 10px; border-radius: 20px; margin-left: 8px; font-weight: 600; display: inline-block; vertical-align: middle; animation: pulse 2s infinite; }
+    .badge-sold { background: #999; color: white; font-size: 11px; padding: 3px 8px; border-radius: 4px; margin-left: 8px; display: inline-block; font-weight: 500; }
+    .price-box { background: linear-gradient(135deg, #00C6FF, #0072FF); color: white; padding: 25px 20px; border-radius: 16px; margin-bottom: 25px; margin-top: 15px; box-shadow: 0 8px 20px rgba(0,114,255,0.25); position: relative; overflow: hidden; text-align: center; }
+    .price-val { font-size: 48px; font-weight: 800; line-height: 1; }
+    .qr-frame { border: 3px solid #E1E8F5; border-radius: 20px; padding: 15px; display: inline-block; margin-bottom: 20px; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.08); position: relative; text-align: center; }
+    .qr-img { width: 100%; max-width: 260px; border-radius: 12px; display: block; }
+    .upload-btn-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; margin-top: 15px; }
+    .btn-select { border: 2px dashed #0072FF; color: #0072FF; background-color: #F0F9FF; padding: 15px 20px; border-radius: 12px; font-weight: 600; width: 100%; cursor: pointer; transition: 0.2s; font-size: 16px; }
+    .upload-btn-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
+    #preview { margin-top: 20px; max-width: 100%; border-radius: 12px; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #eee; }
+      
+    .line-btn { display: block; width: 100%; text-decoration: none; padding: 15px 0; border-radius: 50px; font-weight: bold; margin-bottom: 10px; transition: transform 0.2s; cursor: pointer; text-align: center; }
+    .btn-main { background: #06C755; color: white; box-shadow: 0 4px 15px rgba(6,199,85,0.3); }
+    .btn-sec { background: white; color: #003B8E; border: 2px solid #003B8E; }
+    .hidden { display: none !important; }
+    #loading { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); z-index:999; flex-direction:column; justify-content:center; align-items:center; }
+    .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #0072FF; border-radius: 50%; width: 45px; height: 45px; animation: spin 0.8s linear infinite; margin-bottom: 20px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* --- Custom Modal Styles --- */
+    #custom-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
+    .custom-modal { background: white; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: popIn 0.3s ease; }
+    @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .modal-icon { font-size: 50px; margin-bottom: 15px; }
+    .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #003B8E; }
+    .modal-desc { font-size: 15px; color: #555; margin-bottom: 25px; line-height: 1.5; }
+    .modal-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .modal-btn { flex: 1; padding: 12px; border-radius: 50px; font-weight: bold; cursor: pointer; border: none; font-size: 15px; min-width: 120px; }
+    .btn-confirm { background: #0072FF; color: white; }
+    .btn-cancel { background: #f0f0f0; color: #333; }
+    .btn-line { background: #06C755; color: white; width: 100%; display: block; text-decoration: none; padding: 12px; box-sizing: border-box; }
+    
+    /* --- NEW: Payment Choice Buttons in Modal --- */
+    .pay-choice-btn {
+        display: block; width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 12px; border: 2px solid #E1E8F5; background: white; text-align: left; cursor: pointer; transition: 0.2s;
+    }
+    .pay-choice-btn:hover { border-color: #0072FF; background: #F0F9FF; }
+    .pay-choice-title { font-weight: 700; color: #003B8E; font-size: 16px; display: block; }
+    .pay-choice-desc { font-size: 13px; color: #666; }
+    .pay-choice-badge { float: right; background: #E6F7FF; color: #0072FF; font-size: 12px; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+
+    /* --- Checkmark Animation --- */
+    .checkmark-wrapper { width: 100px; height: 100px; margin: 0 auto 20px; }
+    .checkmark-svg { width: 100px; height: 100px; display: block; }
+    .checkmark-circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 2; stroke-miterlimit: 10; stroke: #06C755; fill: none; stroke-linecap: round; animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
+    .checkmark-fill { fill: #06C755; transform-origin: center; transform: scale(0); animation: fillScale 0.4s ease-in-out 0.4s forwards; }
+    .checkmark-check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; stroke: #ffffff; stroke-width: 4; stroke-linecap: round; animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards; }
+    @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+    @keyframes fillScale { to { transform: scale(1); } }
+  </style>
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loading"><div class="spinner"></div><div style="font-weight: 600; color: #003B8E;">กำลังประมวลผล...</div></div>
+
+  <!-- Custom Modal -->
+  <div id="custom-modal-overlay">
+    <div class="custom-modal">
+      <div id="modal-icon" class="modal-icon"></div>
+      <div id="modal-title" class="modal-title"></div>
+      <div id="modal-desc" class="modal-desc"></div>
+      <div id="modal-content-extra"></div> <!-- New Slot for Payment Choices -->
+      <div id="modal-actions" class="modal-actions"></div>
+    </div>
+  </div>
+
+  <!-- ################# STEP 1: REGISTRATION ################# -->
+  <div id="step-register" class="container">
+    
+    <!-- NEW: Search Box (Top) -->
+    <div class="search-card">
+        <div class="search-title">
+            <i class="fas fa-search"></i> ตรวจสอบสถานะ / ชำระเงินเพิ่ม
+        </div>
+        <div class="search-box-wrapper">
+            <input type="tel" id="search-phone" class="search-input" placeholder="กรอกเบอร์โทรศัพท์ที่สมัคร" maxlength="10">
+            <button class="search-btn" onclick="checkStatus()">ค้นหา</button>
+        </div>
+    </div>
+
+    <div class="banner">
+      <div class="logo-badge">Chokdee Content</div>
+      <h1>AI Content Bootcamp</h1>
+      <p>(5 Days) สร้างคอนเทนต์ + ใช้ AI จับมือทำ</p>
+    </div>
+
+    <!-- 1. Platforms (Tech Grid) -->
+    <div class="tech-grid">
+      <div class="tech-badge">Canva</div>
+      <div class="tech-badge">Keynote</div>
+      <div class="tech-badge">CapCut</div>
+      <div class="tech-badge">Numbers</div>
+      <div class="tech-badge">ChatGPT</div>
+      <div class="tech-badge">Gemini</div>
+      <div class="tech-badge">Facebook</div>
+      <div class="tech-badge">Digital Office</div>
+      <div class="tech-badge">LINE OA</div>
+    </div>
+
+    <!-- 2. Agenda -->
+    <button class="agenda-toggle-btn" onclick="toggleAgenda()">
+      <span>⭐️ AGENDA สรุป 5 วัน</span>
+      <i class="fas fa-chevron-down" id="agenda-icon"></i>
+    </button>
+    <div class="agenda-content" id="agenda-box">
+      <ul class="agenda-list">
+        <li><span class="day-badge">Day 1</span><span><b>Canva / Keynote</b> – เทคนิคคอนเทนต์ + ทำภาพ</span></li>
+        <li><span class="day-badge">Day 2</span><span><b>CapCut / Numbers</b> – ทำคลิป + ระบบงาน + เนื้อหาขาย</span></li>
+        <li><span class="day-badge">Day 3</span><span><b>ChatGPT / Gemini</b> – AI Content</span></li>
+        <li><span class="day-badge">Day 4</span><span><b>Facebook / Digital Office</b> – ลงคอนเทนต์จริง</span></li>
+        <li><span class="day-badge">Day 5</span><span><b>LINE OA</b> – Broadcast + Rich Menu + สรุปการเรียน</span></li>
+      </ul>
+    </div>
+
+    <!-- 3. Stats -->
+    <div class="card">
+      <div class="section-title" style="margin-top:0;">📊 สถิติการเลือกเรียน (Real-time)</div>
+      
+      <div class="stats-row">
+        <div class="stats-label">
+          <span>8–12 ม.ค.</span> 
+          <span id="txt-dayA"><i class="fas fa-circle-notch fa-spin" style="font-size:14px; color:#0072FF;"></i></span>
+        </div>
+        <div class="progress-bg"><div class="progress-fill" id="bar-dayA"></div></div>
+      </div>
+      
+      <div class="stats-row">
+        <div class="stats-label">
+          <span>13–17 ม.ค.</span> 
+          <span id="txt-dayB"><i class="fas fa-circle-notch fa-spin" style="font-size:14px; color:#0072FF;"></i></span>
+        </div>
+        <div class="progress-bg"><div class="progress-fill" id="bar-dayB"></div></div>
+      </div>
+      
+      <div style="margin: 20px 0; border-top: 1px dashed #E1E8F5;"></div>
+      
+      <div class="stats-row">
+        <div class="stats-label">
+          <span>19:00 - 21:00</span> 
+          <span id="txt-time1"><i class="fas fa-circle-notch fa-spin" style="font-size:14px; color:#0072FF;"></i></span>
+        </div>
+        <div class="progress-bg"><div class="progress-fill" id="bar-time1"></div></div>
+      </div>
+      
+      <div class="stats-row">
+        <div class="stats-label">
+          <span>20:00 - 22:00</span> 
+          <span id="txt-time2"><i class="fas fa-circle-notch fa-spin" style="font-size:14px; color:#0072FF;"></i></span>
+        </div>
+        <div class="progress-bg"><div class="progress-fill" id="bar-time2"></div></div>
+      </div>
+      
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 6px; color: #888; margin-top: 15px; background: #f9f9f9; padding: 12px; border-radius: 8px; font-size: 14px;">
+        <span>ผู้ลงทะเบียนแล้วทั้งหมด:</span>
+        <b id="total-reg" style="color: #003B8E; font-size: 26px; font-weight: 800; line-height: 1;">
+          <i class="fas fa-circle-notch fa-spin" style="font-size: 20px; color: #0072FF;"></i>
+        </b> 
+        <span>ท่าน</span>
+      </div>
+
+      <div style="text-align: center; color: #FF0000; font-weight: 500; font-size: 12px; margin-top: 10px;">
+        *หมายเหตุ: คอร์สจะจัดตามช่วงวันและเวลาที่คนเลือกมากที่สุด
+      </div>
+    </div>
+
+    <!-- 4. Form Inputs -->
+    <div class="section-title" id="section-day">📅 เลือกวันเรียน <span class="required">*</span></div>
+    <div class="choice-group" style="margin-bottom: 20px;">
+      <div class="choice-btn" onclick="selectDay('A', this)"><span class="choice-title">A) 7–11 มกราคม 2569</span><span class="choice-desc">วันพุธ – อาทิตย์</span></div>
+      <div class="choice-btn" onclick="selectDay('B', this)"><span class="choice-title">B) 12–16 มกราคม 2569</span><span class="choice-desc">วันจันทร์ – ศุกร์</span></div>
+    </div>
+
+    <div class="section-title" id="section-time">⏰ เลือกเวลาเรียน <span class="required">*</span></div>
+    <div class="choice-group">
+      <div class="choice-btn" onclick="selectTime('19:00-21:00', this)"><span class="choice-title">⏰ 19:00 – 21:00 น.</span><span class="choice-desc">ระยะเวลา 2 ชั่วโมง</span></div>
+      <div class="choice-btn" onclick="selectTime('20:00-22:00', this)"><span class="choice-title">⏰ 20:00 – 22:00 น.</span><span class="choice-desc">ระยะเวลา 2 ชั่วโมง</span></div>
+    </div>
+
+    <div class="section-title">📝 ข้อมูลผู้สมัคร</div>
+    <div class="card">
+      <div class="form-group"><label class="input-label">เบอร์โทรศัพท์ (10 หลัก) <span class="required">*</span></label><input type="tel" id="phone" placeholder="กรอกเบอร์โทรศัพท์ (ตัวเลขเท่านั้น)" maxlength="10" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
+      <div class="form-group"><label class="input-label">ชื่อ - นามสกุล <span class="required">*</span></label><input type="text" id="fullname" placeholder="กรอกชื่อและนามสกุล"></div>
+      <div class="form-group"><label class="input-label">อีเมล <span class="required">*</span></label><input type="email" id="email" placeholder="ตัวอย่าง: name@example.com"></div>
+      <div class="form-group"><label class="input-label">LINE ID <span class="required">*</span></label><input type="text" id="lineid" placeholder="กรอก LINE ID ของท่าน"></div>
+      <div class="form-group"><label class="input-label">สาขา <span class="required">*</span></label><input type="text" id="branch" placeholder="ระบุสาขา"></div>
+      <div class="form-group">
+        <label class="input-label">ตำแหน่ง <span class="required">*</span></label>
+        <select id="position" onchange="toggleOtherPosition()">
+          <option value="">-- กรุณาเลือกตำแหน่ง --</option>
+          <option>ตัวแทน</option>
+          <option>ผู้บริหารหน่วย</option>
+          <option>ผู้บริหารศูนย์</option>
+          <option>ผู้จัดการศูนย์</option>
+          <option>ผู้บริหารภาค</option>
+          <option>ผู้จัดการภาค</option>
+          <option>ผู้จัดการภาคอาวุโส</option>
+          <option>ผู้จัดการฝ่าย</option>
+          <option>อื่นๆ</option>
+        </select>
+      </div>
+      <div class="form-group" id="other-position-group" style="display: none;">
+        <label class="input-label">ระบุตำแหน่ง <span class="required">*</span></label>
+        <input type="text" id="other_position" placeholder="กรอกตำแหน่งของคุณ">
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitForm()">ยืนยันข้อมูล & ไปชำระเงิน</button>
+  </div>
+
+
+  <!-- ################# STEP 2: PAYMENT ################# -->
+  <div id="step-payment" class="container hidden">
+    <h3 style="margin-top:0; color:#003B8E; font-size: 22px; text-align:center;">ชำระเงินค่าคอร์ส</h3>
+
+    <!-- Tiers (Show only for full/new, hidden for remaining payment logic if needed) -->
+    <div class="tier-container" id="pricing-tiers">
+      <div class="tier-item" id="tier-super">
+        <span>Super Early Bird</span><span id="price-super">...</span>
+      </div>
+      <div class="tier-item" id="tier-early">
+        <span>Early Bird</span><span id="price-early">...</span>
+      </div>
+      <div class="tier-item" id="tier-normal">
+        <span>ราคาปกติ</span><span id="price-normal">...</span>
+      </div>
+    </div>
+
+    <div class="price-box">
+      <div class="price-label" id="pay-label">ยอดที่ต้องชำระ</div>
+      <div>
+        <span class="price-val" id="showPrice">...</span><span class="price-unit">บาท</span>
+      </div>
+    </div>
+
+    <div style="text-align: center;">
+      <div class="qr-frame">
+        <img src="https://lh5.googleusercontent.com/d/1XTK-hRKadNaPH5HUqgROer_xbuehWIT1" class="qr-img" id="qrImage">
+        <p style="font-size: 13px; margin: 10px 0 0; color:#555; font-weight: 500;">
+          <i class="fas fa-university"></i> ธนาคารกสิกรไทย<br>
+          <span style="color:#003B8E; font-weight:bold;">726-2-87971-7</span>
+        </p>
+      </div>
+    </div>
+
+    <div style="text-align: left; margin-top: 15px;">
+      <label style="font-weight: bold; font-size:15px; margin-left:5px; color:#333;">แนบหลักฐานการโอนเงิน</label>
+      <div class="upload-btn-wrapper">
+        <button class="btn-select" id="btnSelect">
+          <i class="fas fa-cloud-upload-alt"></i> แตะเพื่อเลือกรูปสลิป
+        </button>
+        <input type="file" id="slipFile" accept="image/*" onchange="previewFile()">
+      </div>
+      <img id="preview">
+    </div>
+
+    <button class="submit-btn" id="btnConfirm" onclick="uploadSlip()">
+      <i class="fas fa-check-circle"></i> ยืนยันการชำระเงิน
+    </button>
+  </div>
+
+
+  <!-- ################# STEP 3: SUCCESS ################# -->
+  <div id="step-success" class="container hidden" style="text-align: center; padding-top: 40px;">
+    <!-- Premium SVG Animation -->
+    <div class="checkmark-wrapper">
+      <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <circle class="checkmark-fill" cx="26" cy="26" r="23" />
+        <circle class="checkmark-circle" cx="26" cy="26" r="23" fill="none"/>
+        <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+      </svg>
+    </div>
+
+    <h2 style="color:#003B8E; margin-bottom:10px;">ดำเนินการสำเร็จ!</h2>
+    <p style="color:#666; font-size:14px; margin-bottom:30px;" id="success-msg">ระบบได้รับข้อมูลและสลิปเรียบร้อยแล้ว<br>กรุณากดปุ่มด้านล่างเพื่อเข้ากลุ่มเรียน</p>
+      
+    <a href="https://line.me/ti/g/fmMXxuHaw-" class="line-btn btn-main" target="_blank" id="btn-line-group">
+      เข้ากลุ่มไลน์ (Click)
+    </a>
+
+    <a href="#" onclick="location.reload()" class="line-btn btn-sec">
+      กลับหน้าหลัก
+    </a>
+  </div>
+
+
+  <script>
+    // ⚠️ 1. Deploy GAS เป็น Web App (เลือก Anyone)
+    // ⚠️ 2. นำ URL มาใส่ตรงนี้
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx_T4XqbzkGX67kKuQBUUn_JDFor-5EfMyjS97njDhI2TCj9jFaQz8HYa-eozVEa5Ha/exec";
+
+    // Global State
+    let selectedData = { day: "", time: "" };
+    let globalRowID = null;
+    let globalFullPrice = 0; // ราคาเต็ม
+    let globalConfig = null;
+    let currentPaymentType = 'full'; // 'full', 'deposit', 'remaining'
+
+    // ----- Initialization -----
+    window.onload = function() {
+      fetch(WEB_APP_URL + "?action=getStats")
+        .then(res => res.json())
+        .then(renderStats)
+        .catch(err => console.warn("Stats load error:", err));
+        
+      fetch(WEB_APP_URL + "?action=getConfig")
+        .then(res => res.json())
+        .then(data => { globalConfig = data; })
+        .catch(err => console.warn("Config load error:", err));
+    };
+
+    // ----- NAVIGATION -----
+    function showStep(stepId) {
+      document.getElementById('step-register').classList.add('hidden');
+      document.getElementById('step-payment').classList.add('hidden');
+      document.getElementById('step-success').classList.add('hidden');
+        
+      document.getElementById(stepId).classList.remove('hidden');
+      window.scrollTo(0, 0);
+    }
+
+    // ----- STEP 1 LOGIC (REGISTER) -----
+    function selectDay(val, el) {
+      const mappedValue = val === 'A' ? '7–11 มกราคม 2569' : '12–16 มกราคม 2569';
+      const group = el.closest('.choice-group');
+      if (el.classList.contains('active')) { selectedData.day = ""; el.classList.remove('active'); } 
+      else { group.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); selectedData.day = mappedValue; }
+    }
+
+    function selectTime(val, el) {
+      const group = el.closest('.choice-group');
+      if (el.classList.contains('active')) { selectedData.time = ""; el.classList.remove('active'); } 
+      else { group.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); selectedData.time = val; }
+    }
+
+    function toggleAgenda() {
+      const box = document.getElementById('agenda-box');
+      const icon = document.getElementById('agenda-icon');
+      if (box.classList.contains('show')) { box.classList.remove('show'); icon.classList.remove('fa-chevron-up'); icon.classList.add('fa-chevron-down'); }
+      else { box.classList.add('show'); icon.classList.remove('fa-chevron-down'); icon.classList.add('fa-chevron-up'); }
+    }
+
+    function toggleOtherPosition() {
+        const pos = document.getElementById('position').value;
+        const otherGroup = document.getElementById('other-position-group');
+        if (pos === 'อื่นๆ') otherGroup.style.display = 'block'; 
+        else { otherGroup.style.display = 'none'; document.getElementById('other_position').value = ''; }
+    }
+
+    function renderStats(stats) {
+      if (!stats) return;
+      document.getElementById("total-reg").innerText = stats.total;
+      updateBar("bar-dayA", "txt-dayA", stats.dayA, stats.total);
+      updateBar("bar-dayB", "txt-dayB", stats.dayB, stats.total);
+      updateBar("bar-time1", "txt-time1", stats.time1, stats.total);
+      updateBar("bar-time2", "txt-time2", stats.time2, stats.total);
+      
+      // Reset classes
+      ['txt-dayA', 'txt-dayB', 'txt-time1', 'txt-time2'].forEach(id => document.getElementById(id).classList.remove('stat-max'));
+
+      // Highlight Max Day
+      if (stats.dayA > stats.dayB) document.getElementById('txt-dayA').classList.add('stat-max');
+      else if (stats.dayB > stats.dayA) document.getElementById('txt-dayB').classList.add('stat-max');
+
+      // Highlight Max Time (New Logic)
+      if (stats.time1 > stats.time2) document.getElementById('txt-time1').classList.add('stat-max');
+      else if (stats.time2 > stats.time1) document.getElementById('txt-time2').classList.add('stat-max');
+    }
+
+    function updateBar(barId, txtId, val, total) {
+      let pct = total === 0 ? 0 : Math.round((val / total) * 100);
+      document.getElementById(barId).style.width = pct + "%";
+      document.getElementById(txtId).innerText = pct + "% (" + val + " คน)";
+    }
+
+    // --- Custom Modal Function ---
+    function showModal(type, callback, extraData = null) {
+        const overlay = document.getElementById('custom-modal-overlay');
+        const icon = document.getElementById('modal-icon');
+        const title = document.getElementById('modal-title');
+        const desc = document.getElementById('modal-desc');
+        const contentExtra = document.getElementById('modal-content-extra');
+        const actions = document.getElementById('modal-actions');
+
+        overlay.style.display = 'flex';
+        actions.innerHTML = ''; 
+        contentExtra.innerHTML = '';
+        icon.innerHTML = '';
+
+        if (type === 'payment_choice') {
+            // NEW: Modal for selecting payment type (Booking vs Full)
+            icon.innerHTML = '💳';
+            title.innerText = 'เลือกรูปแบบการชำระเงิน';
+            desc.innerHTML = 'คุณสามารถเลือกจองสิทธิ์ก่อน (20%) <br>หรือชำระเต็มจำนวน (100%)';
+
+            const fullPrice = extraData.price;
+            const depositPrice = Math.ceil(fullPrice * 0.2);
+
+            contentExtra.innerHTML = `
+                <div class="pay-choice-btn" onclick="selectPaymentType('deposit', ${depositPrice}, ${fullPrice})">
+                    <span class="pay-choice-title">จองสิทธิ์ (มัดจำ 20%) <span class="pay-choice-badge">แนะนำ</span></span>
+                    <span class="pay-choice-desc">ชำระเพียง <b>${depositPrice.toLocaleString()}</b> บาท เพื่อล็อคที่นั่ง</span>
+                </div>
+                <div class="pay-choice-btn" onclick="selectPaymentType('full', ${fullPrice}, ${fullPrice})">
+                    <span class="pay-choice-title">ชำระเต็มจำนวน (100%)</span>
+                    <span class="pay-choice-desc">ชำระยอด <b>${fullPrice.toLocaleString()}</b> บาท</span>
+                </div>
+            `;
+            // No default action buttons, choices trigger action
+            const btnCancel = document.createElement('button');
+            btnCancel.className = 'modal-btn btn-cancel';
+            btnCancel.innerText = 'ยกเลิก';
+            btnCancel.onclick = function() { overlay.style.display = 'none'; };
+            actions.appendChild(btnCancel);
+        }
+        else if (type === 'duplicate_pending') {
+            icon.innerHTML = '⚠️';
+            title.innerText = 'พบข้อมูลเดิมในระบบ';
+            desc.innerHTML = 'เบอร์โทรศัพท์นี้ลงทะเบียนไว้แล้วแต่ยังไม่ได้ชำระเงิน<br>คุณต้องการอัปเดตข้อมูลใหม่และดำเนินการต่อหรือไม่?';
+            
+            const btnConfirm = document.createElement('button');
+            btnConfirm.className = 'modal-btn btn-confirm';
+            btnConfirm.innerText = 'ยืนยัน / ไปจ่ายเงิน';
+            btnConfirm.onclick = function() { overlay.style.display = 'none'; callback(true); };
+
+            const btnCancel = document.createElement('button');
+            btnCancel.className = 'modal-btn btn-cancel';
+            btnCancel.innerText = 'ยกเลิก';
+            btnCancel.onclick = function() { overlay.style.display = 'none'; callback(false); location.reload(); };
+
+            actions.appendChild(btnCancel);
+            actions.appendChild(btnConfirm);
+        } 
+        else if (type === 'duplicate_paid') {
+            icon.innerHTML = '✅';
+            title.innerText = 'ชำระเงินเรียบร้อยแล้ว';
+            desc.innerHTML = 'เบอร์โทรศัพท์นี้ได้ลงทะเบียนและชำระเงินครบถ้วนแล้ว<br>สามารถเข้ากลุ่มเรียนได้ทันที';
+            
+            const btnLine = document.createElement('a');
+            btnLine.className = 'modal-btn btn-line';
+            btnLine.innerText = 'เข้ากลุ่มไลน์ (Click)';
+            btnLine.href = 'https://line.me/ti/g/fmMXxuHaw-';
+            btnLine.target = '_blank';
+
+            actions.appendChild(btnLine);
+        }
+        else if (type === 'not_found') {
+            icon.innerHTML = '❌';
+            title.innerText = 'ไม่พบข้อมูล';
+            desc.innerHTML = 'ไม่พบเบอร์โทรศัพท์นี้ในระบบ หรืออาจหมดเวลาชำระเงินแล้ว<br>กรุณาลงทะเบียนใหม่อีกครั้ง';
+             const btnOk = document.createElement('button');
+            btnOk.className = 'modal-btn btn-cancel';
+            btnOk.innerText = 'ปิด';
+            btnOk.onclick = function() { overlay.style.display = 'none'; };
+            actions.appendChild(btnOk);
+        }
+    }
+
+    // --- NEW: Check Status Logic ---
+    function checkStatus() {
+        const phone = document.getElementById('search-phone').value.trim();
+        if (!phone || phone.length < 9) { return alert("กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง"); }
+
+        document.getElementById('loading').style.display = 'flex';
+        
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'checkStatus', phone: phone })
+        })
+        .then(res => res.json())
+        .then(res => {
+            document.getElementById('loading').style.display = 'none';
+            if (res.status === "found") {
+                const d = res.data;
+                globalRowID = d.rowid;
+                globalFullPrice = d.fullPrice;
+                
+                if (d.rowStatus === "Paid") {
+                    showModal('duplicate_paid');
+                } else if (d.rowStatus === "Booking") {
+                    // จ่ายส่วนที่เหลือ (Remaining)
+                    currentPaymentType = 'remaining';
+                    setupPaymentPage(d.remaining); 
+                    showStep('step-payment');
+                    document.getElementById('pay-label').innerHTML = "ชำระส่วนที่เหลือ (80%)";
+                    alert(`✅ พบข้อมูลการจองของคุณ ${d.fullname}\nกรุณาชำระยอดที่เหลือ: ${d.remaining} บาท`);
+                } else if (d.rowStatus === "Pending") {
+                    // ยังไม่จ่ายเลย -> ให้เลือกจ่ายใหม่ (เหมือนสมัครใหม่)
+                    // แต่เพื่อความง่าย ให้จ่ายเต็ม หรือ จอง เหมือน Flow ปกติ แต่ข้ามหน้ากรอกข้อมูล
+                    // เรียก Modal Payment Choice ขึ้นมาเลย
+                     showModal('payment_choice', null, { price: d.fullPrice });
+                }
+            } else {
+                showModal('not_found');
+            }
+        })
+        .catch(err => {
+            document.getElementById('loading').style.display = 'none';
+            alert("Connection Error");
+        });
+    }
+
+    // --- NEW: Select Payment Type from Modal ---
+    function selectPaymentType(type, amountToShow, fullPrice) {
+        currentPaymentType = type;
+        globalFullPrice = fullPrice;
+        document.getElementById('custom-modal-overlay').style.display = 'none';
+        
+        setupPaymentPage(amountToShow);
+        
+        if (type === 'deposit') {
+             document.getElementById('pay-label').innerHTML = "ชำระค่ามัดจำ (20%)";
+        } else {
+             document.getElementById('pay-label').innerHTML = "ยอดที่ต้องชำระ (เต็มจำนวน)";
+        }
+        
+        showStep('step-payment');
+    }
+
+    // --- Submit Form Logic ---
+    function submitForm(isForceUpdate = false) {
+      const phoneInput = document.getElementById('phone').value.trim();
+      let positionValue = document.getElementById('position').value;
+      const otherPositionValue = document.getElementById('other_position').value.trim();
+      if (positionValue === 'อื่นๆ') positionValue = otherPositionValue;
+
+      const form = {
+        fullname: document.getElementById('fullname').value.trim(),
+        phone: phoneInput,
+        email: document.getElementById('email').value.trim(),
+        lineid: document.getElementById('lineid').value.trim(),
+        branch: document.getElementById('branch').value.trim(),
+        position: positionValue,
+        day: selectedData.day,
+        time: selectedData.time
+      };
+
+      if(!form.day) { alert("⚠️ กรุณาเลือก 'วันเรียน' ที่สะดวก"); document.getElementById('section-day').scrollIntoView({behavior:'smooth',block:'center'}); return; }
+      if(!form.time) { alert("⚠️ กรุณาเลือก 'เวลาเรียน' ที่สะดวก"); document.getElementById('section-time').scrollIntoView({behavior:'smooth',block:'center'}); return; }
+      if(!form.phone || form.phone.length !== 10) { alert("⚠️ เบอร์โทรต้องมี 10 หลัก"); document.getElementById('phone').focus(); return; }
+      if(!form.fullname || !form.email || !form.lineid || !form.branch || !positionValue) { alert("⚠️ กรุณากรอกข้อมูลให้ครบทุกช่อง"); return; }
+      if(document.getElementById('position').value === 'อื่นๆ' && !otherPositionValue) { alert("⚠️ ระบุตำแหน่งของคุณ"); document.getElementById('other_position').focus(); return; }
+
+      document.getElementById('loading').style.display = 'flex';
+        
+      fetch(WEB_APP_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'register', form: form, forceUpdate: isForceUpdate, paymentType: 'pending_choice' }), // Send pending first
+      })
+      .then(res => res.json())
+      .then(res => {
+        document.getElementById('loading').style.display = 'none';
+        
+        if (res.status === "EXISTING_FOUND") {
+            showModal('duplicate_pending', function(confirm) {
+                if(confirm) submitForm(true); 
+            });
+        }
+        else if (res.status === "ALREADY_PAID") {
+            showModal('duplicate_paid');
+        } 
+        else if (res.rowid) {
+            // Success Register -> Open Choice Modal
+            globalRowID = res.rowid;
+            globalFullPrice = res.price; // Save full price
+
+            if (res.rowStatus === "Booking") {
+                 // ถ้าสถานะเดิมเป็น Booking แล้วมาสมัครซ้ำ -> ให้ไปจ่ายส่วนที่เหลือ
+                 currentPaymentType = 'remaining';
+                 const remaining = Math.ceil(globalFullPrice * 0.8); // Estimate or get from backend
+                 setupPaymentPage(remaining);
+                 document.getElementById('pay-label').innerHTML = "ชำระส่วนที่เหลือ (80%)";
+                 showStep('step-payment');
+            } else {
+                // New or Update Pending -> Choice
+                showModal('payment_choice', null, { price: globalFullPrice });
+            }
+        } else {
+            alert("Error: " + (res.message || "Unknown error"));
+        }
+      })
+      .catch(err => {
+        document.getElementById('loading').style.display = 'none';
+        alert("Connection Error: " + err.message);
+      });
+    }
+
+    // ----- STEP 2 LOGIC (PAYMENT) -----
+    function setupPaymentPage(displayPrice) {
+      if (globalConfig) updatePricingUI(globalConfig);
+      
+      // ถ้าไม่ได้ส่ง displayPrice มา ให้ใช้ราคาเต็ม (Fallback)
+      const finalPrice = displayPrice ? displayPrice : globalFullPrice;
+      document.getElementById('showPrice').innerText = finalPrice.toLocaleString();
+    }
+
+    function updatePricingUI(data) {
+      const paid = data.paidCount;
+      const cfg = data.config; 
+
+      document.getElementById('price-super').innerText = cfg.priceSuper.toLocaleString() + ".-";
+      document.getElementById('price-early').innerText = cfg.priceEarly.toLocaleString() + ".-";
+      document.getElementById('price-normal').innerText = cfg.priceNormal.toLocaleString() + ".-";
+
+      const tSuper = document.getElementById('tier-super');
+      const tEarly = document.getElementById('tier-early');
+      const tNormal = document.getElementById('tier-normal');
+        
+      [tSuper, tEarly, tNormal].forEach(el => el.className = 'tier-item future');
+
+      if (paid < cfg.superLimit) {
+        tSuper.className = 'tier-item active';
+        const left = cfg.superLimit - paid;
+        tSuper.querySelector('span:first-child').innerHTML += ` <span class="badge-stock">🔥 เหลือ ${left} สิทธิ์</span>`;
+      } else if (paid < (cfg.earlyLimit)) { 
+        tSuper.className = 'tier-item sold-out';
+        tSuper.querySelector('span:first-child').innerHTML += ` <span class="badge-sold">SOLD OUT</span>`;
+        tEarly.className = 'tier-item active';
+        const left = (cfg.earlyLimit) - paid;
+        tEarly.querySelector('span:first-child').innerHTML += ` <span class="badge-stock">🔥 เหลือ ${left} สิทธิ์</span>`;
+      } else {
+        tSuper.className = 'tier-item sold-out';
+        tSuper.querySelector('span:first-child').innerHTML += ` <span class="badge-sold">SOLD OUT</span>`;
+        tEarly.className = 'tier-item sold-out';
+        tEarly.querySelector('span:first-child').innerHTML += ` <span class="badge-sold">SOLD OUT</span>`;
+        tNormal.className = 'tier-item active';
+      }
+    }
+
+    function previewFile() {
+      const file = document.getElementById('slipFile').files[0];
+      const preview = document.getElementById('preview');
+      const btn = document.getElementById('btnConfirm');
+      const btnSelect = document.getElementById('btnSelect');
+        
+      const reader = new FileReader();
+      reader.onloadend = function() {
+        preview.src = reader.result;
+        preview.style.display = "block";
+        btnSelect.innerHTML = '<i class="fas fa-sync-alt"></i> เปลี่ยนรูปสลิป';
+        btn.style.display = "block";
+        btn.scrollIntoView({behavior: "smooth"});
+      }
+      if (file) reader.readAsDataURL(file);
+    }
+
+    // --- Helper: Compress Image for Mobile ---
+    function compressImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = event => {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const maxWidth = 500; // ⚠️ ลดจาก 600 เป็น 500 เพื่อให้ไฟล์เล็กลงอีก
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxWidth) {
+              height *= maxWidth / width;
+              width = maxWidth;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+              
+            // ⚠️ ลดคุณภาพจาก 0.5 เป็น 0.4 เพื่อให้ไฟล์เล็กที่สุด
+            resolve(canvas.toDataURL('image/jpeg', 0.4).split(',')[1]);
+          };
+          img.onerror = error => reject(error);
+        };
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    async function uploadSlip() {
+      const file = document.getElementById('slipFile').files[0];
+      if(!file) return alert("กรุณาแนบสลิป");
+
+      const btn = document.getElementById('btnConfirm');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังอัปโหลด...';
+      document.getElementById('loading').style.display = 'flex';
+
+      // --- สร้าง AbortController เพื่อขยายเวลา Timeout ---
+      const controller = new AbortController();
+      // ตั้งเวลา 3 นาที (180,000 ms) ก่อนที่จะตัดการเชื่อมต่อ
+      const timeoutId = setTimeout(() => controller.abort(), 180000);
+
+      try {
+        if (!globalRowID) {
+            throw new Error("Session Expired (RowID missing). Please register again.");
+        }
+
+        // --- เพิ่มขั้นตอนย่อรูปก่อนส่ง (Client-side Compression) ---
+        const base64 = await compressImage(file);
+
+        // Send to GAS
+        const res = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          // แนบ signal เพื่อควบคุม timeout
+          signal: controller.signal,
+          body: JSON.stringify({ 
+            action: 'uploadSlip', 
+            rowid: globalRowID, 
+            base64: base64,
+            amountType: currentPaymentType, // NEW: 'deposit', 'full', 'remaining'
+            isRetry: true // flag สำหรับบังคับส่ง Flex (ถ้า backend รองรับ)
+          })
+        }).then(r => r.json());
+
+        // เมื่อทำงานเสร็จให้เคลียร์ timeout
+        clearTimeout(timeoutId);
+
+        document.getElementById('loading').style.display = 'none';
+        
+        if(res.status === 'success') {
+          // Check if status is Paid or Booking to adjust message
+          if (res.newStatus === "Booking") {
+              document.querySelector('h2').innerText = "จองสิทธิ์สำเร็จ!";
+              document.getElementById('success-msg').innerHTML = "ระบบได้รับยอดมัดจำของท่านแล้ว<br>กรุณาเข้ากลุ่มไลน์เพื่อติดตามข่าวสาร";
+          } else {
+              document.querySelector('h2').innerText = "ลงทะเบียนสำเร็จ!";
+              document.getElementById('success-msg').innerHTML = "ระบบได้รับข้อมูลและสลิปเรียบร้อยแล้ว<br>กรุณากดปุ่มด้านล่างเพื่อเข้ากลุ่มเรียน";
+          }
+          showStep('step-success');
+        } else {
+          alert("เกิดข้อผิดพลาด: " + res.message);
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-redo"></i> อัปโหลดอีกครั้ง'; 
+        }
+
+      } catch (err) {
+        clearTimeout(timeoutId); // เคลียร์ timeout เมื่อ error
+        document.getElementById('loading').style.display = 'none';
+        
+        if (err.name === 'AbortError') {
+             alert("ใช้เวลานานเกินไป (Timeout) กรุณาลองใหม่อีกครั้ง หรือใช้อินเทอร์เน็ตที่เสถียรขึ้น");
+        } else {
+             alert("Connection Error: " + err.message);
+        }
+        
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-redo"></i> อัปโหลดอีกครั้ง';
+        
+        if (err.message && err.message.includes("Session")) location.reload();
+      }
+    }
+  </script>
+</body>
+</html>
