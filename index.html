@@ -89,8 +89,34 @@
     .required { color: #FF4D4F; margin-left: 4px; font-size: 16px; }
     input, select { width: 100%; padding: 16px; border: 1px solid #E1E8F5; border-radius: 12px; font-size: 16px; font-family: "Prompt"; background: #FAFCFF; box-sizing: border-box; outline: none; transition: 0.3s; color: #333; }
     input:focus, select:focus { border-color: #0072FF; background: white; box-shadow: 0 0 0 3px rgba(0,114,255,0.1); }
-    .submit-btn { width: 100%; background: linear-gradient(90deg, #0072FF, #00C6FF); color: white; border: none; padding: 18px; font-size: 18px; font-weight: 700; border-radius: 50px; cursor: pointer; box-shadow: 0 8px 25px rgba(0,114,255,0.35); margin-top: 15px; transition: transform 0.2s; }
-    .submit-btn:active { transform: scale(0.98); }
+    
+    /* --- UPDATED: New Button UI Style --- */
+    .submit-btn { 
+        width: 100%; 
+        background: linear-gradient(90deg, #0066FF, #00CCFF); /* ปรับสีให้สดใสขึ้นตามภาพ */
+        color: white; 
+        border: none; 
+        padding: 18px; 
+        font-size: 20px; /* เพิ่มขนาดตัวอักษร */
+        font-weight: 700; 
+        border-radius: 50px; 
+        cursor: pointer; 
+        box-shadow: 0 10px 30px rgba(0, 114, 255, 0.4); /* เพิ่มเงาฟุ้ง */
+        margin-top: 20px; 
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px; /* ระยะห่างระหว่างข้อความกับไอคอน */
+    }
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0, 114, 255, 0.5);
+    }
+    .submit-btn:active { 
+        transform: scale(0.98) translateY(0); 
+    }
+    
     .tier-container { background: #fff; border: 1px solid #E1E8F5; border-radius: 16px; overflow: hidden; margin-bottom: 25px; text-align: left; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
     .tier-item { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #888; position: relative; transition: all 0.3s; }
     .tier-item:last-child { border-bottom: none; }
@@ -304,7 +330,10 @@
       </div>
     </div>
 
-    <button class="submit-btn" onclick="submitForm()">ยืนยันข้อมูล & ไปชำระเงิน</button>
+    <!-- UPDATED: Button Text & Icon -->
+    <button class="submit-btn" onclick="submitForm()">
+        สมัครเรียนทันที <i class="fas fa-arrow-right"></i>
+    </button>
   </div>
 
 
