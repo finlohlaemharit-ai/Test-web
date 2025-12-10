@@ -10,10 +10,7 @@
     body { font-family: "Prompt", sans-serif; background: #F0F6FF; color: #003B8E; margin: 0; padding-bottom: 40px; }
     .container { max-width: 550px; margin: auto; padding: 20px; box-sizing: border-box; }
     
-    .search-card {
-        background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 6px solid #0072FF;
-    }
+    .search-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 6px solid #0072FF; }
     .search-title { font-size: 18px; font-weight: 700; color: #003B8E; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
     .search-box-wrapper { display: flex; gap: 10px; }
     .search-input { flex: 1; padding: 12px 15px; border: 1px solid #E1E8F5; border-radius: 8px; font-family: "Prompt"; font-size: 14px; outline: none; }
@@ -37,12 +34,25 @@
     .agenda-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #eee; font-size: 14px; display: flex; align-items: flex-start; }
     .day-badge { background: #E6F7FF; color: #0072FF; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-right: 10px; font-size: 12px; min-width: 45px; text-align: center; }
     
-    .stats-row { margin-bottom: 14px; }
-    .stats-label { font-size: 14px; margin-bottom: 6px; display: flex; justify-content: space-between; color: #444; }
-    .stat-max { color: #FF0000 !important; font-weight: 800 !important; font-size: 16px !important; }
-    .progress-bg { background: #E1E8F5; height: 12px; border-radius: 6px; overflow: hidden; }
-    .progress-fill { background: linear-gradient(90deg, #00C6FF, #0072FF); height: 100%; width: 0%; transition: width 1s ease; border-radius: 6px; }
+    /* --- NEW STATS STYLE (Refer to Image) --- */
+    .stats-row { margin-bottom: 20px; }
+    .stats-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 14px; color: #333; }
+    .stats-name { font-weight: 500; color: #333; }
+    .stats-value { font-weight: 500; color: #555; }
     
+    .progress-bg { background: #E1E8F5; height: 10px; border-radius: 20px; overflow: hidden; width: 100%; }
+    /* สีฟ้าสดใสตามภาพต้นแบบ */
+    .progress-fill { background: #0099FF; height: 100%; width: 0%; transition: width 1s ease; border-radius: 20px; }
+    
+    /* Highlight Max Value (Red color) */
+    .stat-max-text { color: #FF0000 !important; font-weight: 800 !important; }
+    
+    .total-container { 
+        background: #F8F9FA; border-radius: 12px; padding: 15px; text-align: center; margin-top: 25px; 
+        display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 14px; color: #666;
+    }
+    .total-number { color: #003B8E; font-size: 28px; font-weight: 800; line-height: 1; }
+
     .choice-group { display: flex; flex-direction: column; gap: 12px; }
     .choice-btn { border: 2px solid #E1E8F5; padding: 18px; border-radius: 14px; background: white; cursor: pointer; text-align: left; transition: all 0.2s; position: relative; }
     .choice-btn:hover { border-color: #00C6FF; }
@@ -166,32 +176,49 @@
     <div class="card">
       <div class="section-title" style="margin-top:0;">📊 สถิติการเลือกเรียน (Real-time)</div>
       
+      <!-- UPDATED UI Structure -->
       <div class="stats-row">
-        <div class="stats-label"><span id="lbl-stat-day-a">กำลังโหลด...</span><span id="txt-dayA"><i class="fas fa-circle-notch fa-spin"></i></span></div>
+        <div class="stats-header">
+            <span class="stats-name" id="lbl-stat-day-a">กำลังโหลด...</span>
+            <span class="stats-value" id="txt-dayA"><i class="fas fa-circle-notch fa-spin"></i></span>
+        </div>
         <div class="progress-bg"><div class="progress-fill" id="bar-dayA"></div></div>
       </div>
+
       <div class="stats-row">
-        <div class="stats-label"><span id="lbl-stat-day-b">กำลังโหลด...</span><span id="txt-dayB"><i class="fas fa-circle-notch fa-spin"></i></span></div>
+        <div class="stats-header">
+            <span class="stats-name" id="lbl-stat-day-b">กำลังโหลด...</span>
+            <span class="stats-value" id="txt-dayB"><i class="fas fa-circle-notch fa-spin"></i></span>
+        </div>
         <div class="progress-bg"><div class="progress-fill" id="bar-dayB"></div></div>
       </div>
+
       <div style="margin: 20px 0; border-top: 1px dashed #E1E8F5;"></div>
+
       <div class="stats-row">
-        <div class="stats-label"><span id="lbl-stat-time-1">กำลังโหลด...</span><span id="txt-time1"><i class="fas fa-circle-notch fa-spin"></i></span></div>
+        <div class="stats-header">
+            <span class="stats-name" id="lbl-stat-time-1">กำลังโหลด...</span>
+            <span class="stats-value" id="txt-time1"><i class="fas fa-circle-notch fa-spin"></i></span>
+        </div>
         <div class="progress-bg"><div class="progress-fill" id="bar-time1"></div></div>
       </div>
+
       <div class="stats-row">
-        <div class="stats-label"><span id="lbl-stat-time-2">กำลังโหลด...</span><span id="txt-time2"><i class="fas fa-circle-notch fa-spin"></i></span></div>
+        <div class="stats-header">
+            <span class="stats-name" id="lbl-stat-time-2">กำลังโหลด...</span>
+            <span class="stats-value" id="txt-time2"><i class="fas fa-circle-notch fa-spin"></i></span>
+        </div>
         <div class="progress-bg"><div class="progress-fill" id="bar-time2"></div></div>
       </div>
       
-      <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 6px; color: #888; margin-top: 15px; background: #f9f9f9; padding: 12px; border-radius: 8px; font-size: 14px;">
+      <div class="total-container">
         <span>ผู้ลงทะเบียนแล้วทั้งหมด:</span>
-        <b id="total-reg" style="color: #003B8E; font-size: 26px; font-weight: 800; line-height: 1;"><i class="fas fa-circle-notch fa-spin" style="font-size: 20px; color: #0072FF;"></i></b> <span>ท่าน</span>
+        <b class="total-number" id="total-reg"><i class="fas fa-circle-notch fa-spin" style="font-size: 20px;"></i></b>
+        <span>ท่าน</span>
       </div>
       <div style="text-align: center; color: #FF0000; font-weight: 500; font-size: 12px; margin-top: 10px;">*หมายเหตุ: คอร์สจะจัดตามช่วงวันและเวลาที่คนเลือกมากที่สุด</div>
     </div>
 
-    <!-- ⚠️ ปุ่มเลือกวัน/เวลา จะถูกใส่ข้อความอัตโนมัติจาก JS -->
     <div class="section-title" id="section-day">📅 เลือกวันเรียน <span class="required">*</span></div>
     <div class="choice-group" style="margin-bottom: 20px;">
       <div class="choice-btn" onclick="selectDay('A', this)"><span class="choice-title" id="ui-day-a">กำลังโหลด...</span><span class="choice-desc">คลิกเพื่อเลือก</span></div>
@@ -271,7 +298,7 @@
 
   <script>
     // ⚠️ นำ URL ใหม่จากการ Deploy มาใส่ที่นี่
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyQkMsUqW1dqIXS1vJgw6ezwbQ4nkoJmX1ZlmgqtIVVsmAL7ak_z2MLsJXc_RPbIAY/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzP1UnidfntqYcGtg96EI_2KDr7a4ziXEQcL1xwd7-QZ7weVbPpZPgZFRDilQmqtk80/exec";
 
     let selectedData = { day: "", time: "" };
     let globalRowID = null;
@@ -292,7 +319,6 @@
         }).catch(err => console.warn(err));
     };
 
-    // ฟังก์ชันใหม่: อัปเดตข้อความปุ่มจาก Sheet
     function renderConfig(cfg) {
         if(!cfg) return;
         // ปุ่มเลือกวัน
@@ -316,7 +342,6 @@
       window.scrollTo(0, 0);
     }
 
-    // Logic การเลือกวัน: ใช้ค่าจาก Config จริงๆ
     function selectDay(val, el) {
       if(!globalConfig) return alert("กำลังโหลดข้อมูล กรุณารอสักครู่");
       const realValue = val === 'A' ? globalConfig.config.labelDayA : globalConfig.config.labelDayB;
@@ -349,15 +374,26 @@
     function renderStats(stats) {
       if (!stats) return;
       document.getElementById("total-reg").innerText = stats.total;
-      updateBar("bar-dayA", "txt-dayA", stats.dayA, stats.total);
-      updateBar("bar-dayB", "txt-dayB", stats.dayB, stats.total);
-      updateBar("bar-time1", "txt-time1", stats.time1, stats.total);
-      updateBar("bar-time2", "txt-time2", stats.time2, stats.total);
+      
+      // Calculate max percentages to highlight the winner
+      const maxDayVal = Math.max(stats.dayA, stats.dayB);
+      const maxTimeVal = Math.max(stats.time1, stats.time2);
+
+      updateBar("bar-dayA", "txt-dayA", stats.dayA, stats.total, maxDayVal > 0 && stats.dayA === maxDayVal);
+      updateBar("bar-dayB", "txt-dayB", stats.dayB, stats.total, maxDayVal > 0 && stats.dayB === maxDayVal);
+      updateBar("bar-time1", "txt-time1", stats.time1, stats.total, maxTimeVal > 0 && stats.time1 === maxTimeVal);
+      updateBar("bar-time2", "txt-time2", stats.time2, stats.total, maxTimeVal > 0 && stats.time2 === maxTimeVal);
     }
-    function updateBar(barId, txtId, val, total) {
+
+    function updateBar(barId, txtId, val, total, isMax) {
       let pct = total === 0 ? 0 : Math.round((val / total) * 100);
       document.getElementById(barId).style.width = pct + "%";
-      document.getElementById(txtId).innerHTML = pct + "% (" + val + " คน)";
+      
+      const txtEl = document.getElementById(txtId);
+      txtEl.innerText = pct + "% (" + val + " คน)";
+      
+      if(isMax) txtEl.classList.add('stat-max-text');
+      else txtEl.classList.remove('stat-max-text');
     }
 
     function showModal(type, callback, extraData = null) {
