@@ -10,6 +10,7 @@
     body { font-family: "Prompt", sans-serif; background: #F0F6FF; color: #003B8E; margin: 0; padding-bottom: 40px; }
     .container { max-width: 550px; margin: auto; padding: 20px; box-sizing: border-box; }
     
+    /* ... (CSS ส่วนเดิมคงไว้) ... */
     .search-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 6px solid #0072FF; }
     .search-title { font-size: 18px; font-weight: 700; color: #003B8E; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
     .search-box-wrapper { display: flex; gap: 10px; }
@@ -34,25 +35,18 @@
     .agenda-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #eee; font-size: 14px; display: flex; align-items: flex-start; }
     .day-badge { background: #E6F7FF; color: #0072FF; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-right: 10px; font-size: 12px; min-width: 45px; text-align: center; }
     
-    /* --- NEW STATS STYLE (Refer to Image) --- */
+    /* Stats */
     .stats-row { margin-bottom: 20px; }
     .stats-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 14px; color: #333; }
     .stats-name { font-weight: 500; color: #333; }
     .stats-value { font-weight: 500; color: #555; }
-    
     .progress-bg { background: #E1E8F5; height: 10px; border-radius: 20px; overflow: hidden; width: 100%; }
-    /* สีฟ้าสดใสตามภาพต้นแบบ */
     .progress-fill { background: #0099FF; height: 100%; width: 0%; transition: width 1s ease; border-radius: 20px; }
-    
-    /* Highlight Max Value (Red color) */
     .stat-max-text { color: #FF0000 !important; font-weight: 800 !important; }
-    
-    .total-container { 
-        background: #F8F9FA; border-radius: 12px; padding: 15px; text-align: center; margin-top: 25px; 
-        display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 14px; color: #666;
-    }
+    .total-container { background: #F8F9FA; border-radius: 12px; padding: 15px; text-align: center; margin-top: 25px; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 14px; color: #666; }
     .total-number { color: #003B8E; font-size: 28px; font-weight: 800; line-height: 1; }
 
+    /* Inputs & Buttons */
     .choice-group { display: flex; flex-direction: column; gap: 12px; }
     .choice-btn { border: 2px solid #E1E8F5; padding: 18px; border-radius: 14px; background: white; cursor: pointer; text-align: left; transition: all 0.2s; position: relative; }
     .choice-btn:hover { border-color: #00C6FF; }
@@ -87,32 +81,32 @@
     .upload-btn-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
     #preview { margin-top: 20px; max-width: 100%; border-radius: 12px; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #eee; }
       
-    .line-btn { display: block; width: 100%; text-decoration: none; padding: 15px 0; border-radius: 50px; font-weight: bold; margin-bottom: 10px; transition: transform 0.2s; cursor: pointer; text-align: center; }
-    .btn-main { background: #06C755; color: white; box-shadow: 0 4px 15px rgba(6,199,85,0.3); }
-    .btn-sec { background: white; color: #003B8E; border: 2px solid #003B8E; }
     .hidden { display: none !important; }
     #loading { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); z-index:999; flex-direction:column; justify-content:center; align-items:center; }
     .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #0072FF; border-radius: 50%; width: 45px; height: 45px; animation: spin 0.8s linear infinite; margin-bottom: 20px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* Custom Modal */
-    #custom-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
-    .custom-modal { background: white; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: popIn 0.3s ease; }
+    /* Custom Modal - UPDATED: Prevent Overflow */
+    #custom-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(3px); padding: 20px; box-sizing: border-box; }
+    .custom-modal { background: white; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; padding: 30px 25px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: popIn 0.3s ease; display: flex; flex-direction: column; }
     @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     .modal-icon { font-size: 50px; margin-bottom: 15px; }
     .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #003B8E; }
     .modal-desc { font-size: 15px; color: #555; margin-bottom: 25px; line-height: 1.5; }
-    .modal-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .modal-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: auto; }
     .modal-btn { flex: 1; padding: 12px; border-radius: 50px; font-weight: bold; cursor: pointer; border: none; font-size: 15px; min-width: 120px; }
     .btn-confirm { background: #0072FF; color: white; }
     .btn-cancel { background: #f0f0f0; color: #333; }
     .btn-line { background: #06C755; color: white; width: 100%; display: block; text-decoration: none; padding: 12px; box-sizing: border-box; }
     
-    .pay-choice-btn { display: block; width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 12px; border: 2px solid #E1E8F5; background: white; text-align: left; cursor: pointer; transition: 0.2s; }
+    /* Payment Choice Buttons */
+    .pay-choice-btn { display: block; width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 12px; border: 2px solid #E1E8F5; background: white; text-align: left; cursor: pointer; transition: 0.2s; position: relative; }
     .pay-choice-btn:hover { border-color: #0072FF; background: #F0F9FF; }
     .pay-choice-title { font-weight: 700; color: #003B8E; font-size: 16px; display: block; }
     .pay-choice-desc { font-size: 13px; color: #666; }
-    .pay-choice-badge { float: right; background: #E6F7FF; color: #0072FF; font-size: 12px; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+    /* Psychology Badge Styling */
+    .pay-choice-badge { float: right; background: #FF4D4F; color: white; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 5px rgba(255, 77, 79, 0.3); }
+    .pay-choice-btn.recommended { border: 2px solid #0072FF; background: #F4F9FF; box-shadow: 0 4px 10px rgba(0,114,255,0.15); }
 
     /* Checkmark */
     .checkmark-wrapper { width: 100px; height: 100px; margin: 0 auto 20px; }
@@ -126,10 +120,8 @@
 </head>
 <body>
 
-  <!-- Loading Screen -->
   <div id="loading"><div class="spinner"></div><div style="font-weight: 600; color: #003B8E;">กำลังประมวลผล...</div></div>
 
-  <!-- Custom Modal -->
   <div id="custom-modal-overlay">
     <div class="custom-modal">
       <div id="modal-icon" class="modal-icon"></div>
@@ -140,7 +132,7 @@
     </div>
   </div>
 
-  <!-- STEP 1: REGISTRATION -->
+  <!-- STEP 1: REGISTER -->
   <div id="step-register" class="container">
     <div class="search-card">
         <div class="search-title"><i class="fas fa-search"></i> ตรวจสอบสถานะ / ชำระเงินเพิ่ม</div>
@@ -150,6 +142,7 @@
         </div>
     </div>
 
+    <!-- ... (Banner, Tech Grid, Agenda เหมือนเดิม) ... -->
     <div class="banner">
       <div class="logo-badge">Chokdee Content</div>
       <h1>AI Content Bootcamp</h1>
@@ -173,10 +166,10 @@
       </ul>
     </div>
 
+    <!-- UI Stats -->
     <div class="card">
       <div class="section-title" style="margin-top:0;">📊 สถิติการเลือกเรียน (Real-time)</div>
       
-      <!-- UPDATED UI Structure -->
       <div class="stats-row">
         <div class="stats-header">
             <span class="stats-name" id="lbl-stat-day-a">กำลังโหลด...</span>
@@ -219,6 +212,7 @@
       <div style="text-align: center; color: #FF0000; font-weight: 500; font-size: 12px; margin-top: 10px;">*หมายเหตุ: คอร์สจะจัดตามช่วงวันและเวลาที่คนเลือกมากที่สุด</div>
     </div>
 
+    <!-- Forms -->
     <div class="section-title" id="section-day">📅 เลือกวันเรียน <span class="required">*</span></div>
     <div class="choice-group" style="margin-bottom: 20px;">
       <div class="choice-btn" onclick="selectDay('A', this)"><span class="choice-title" id="ui-day-a">กำลังโหลด...</span><span class="choice-desc">คลิกเพื่อเลือก</span></div>
@@ -298,7 +292,7 @@
 
   <script>
     // ⚠️ นำ URL ใหม่จากการ Deploy มาใส่ที่นี่
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzP1UnidfntqYcGtg96EI_2KDr7a4ziXEQcL1xwd7-QZ7weVbPpZPgZFRDilQmqtk80/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzKRhgG6Z_86MlQWcEWybvYl99MX2-NYT8j3LB5j5KnmxSD2lWCAavpAFQpcIOIW8so/exec";
 
     let selectedData = { day: "", time: "" };
     let globalRowID = null;
@@ -307,27 +301,20 @@
     let currentPaymentType = 'full';
 
     window.onload = function() {
-      fetch(WEB_APP_URL + "?action=getStats")
-        .then(res => res.json())
-        .then(renderStats).catch(err => console.warn(err));
-      fetch(WEB_APP_URL + "?action=getConfig")
-        .then(res => res.json())
-        .then(data => { 
+      fetch(WEB_APP_URL + "?action=getStats").then(res => res.json()).then(renderStats).catch(console.warn);
+      fetch(WEB_APP_URL + "?action=getConfig").then(res => res.json()).then(data => { 
             globalConfig = data; 
-            renderConfig(data.config); // อัปเดตข้อความใน UI ตาม Config
+            renderConfig(data.config); 
             updatePricingUI(data); 
-        }).catch(err => console.warn(err));
+        }).catch(console.warn);
     };
 
     function renderConfig(cfg) {
         if(!cfg) return;
-        // ปุ่มเลือกวัน
         document.getElementById('ui-day-a').innerText = "A) " + cfg.labelDayA;
         document.getElementById('ui-day-b').innerText = "B) " + cfg.labelDayB;
-        // ปุ่มเลือกเวลา
         document.getElementById('ui-time-1').innerText = "⏰ " + cfg.labelTime1;
         document.getElementById('ui-time-2').innerText = "⏰ " + cfg.labelTime2;
-        // ป้ายสถิติ
         document.getElementById('lbl-stat-day-a').innerText = cfg.labelDayA;
         document.getElementById('lbl-stat-day-b').innerText = cfg.labelDayB;
         document.getElementById('lbl-stat-time-1').innerText = cfg.labelTime1;
@@ -335,15 +322,13 @@
     }
 
     function showStep(stepId) {
-      document.getElementById('step-register').classList.add('hidden');
-      document.getElementById('step-payment').classList.add('hidden');
-      document.getElementById('step-success').classList.add('hidden');
+      document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
       document.getElementById(stepId).classList.remove('hidden');
       window.scrollTo(0, 0);
     }
 
     function selectDay(val, el) {
-      if(!globalConfig) return alert("กำลังโหลดข้อมูล กรุณารอสักครู่");
+      if(!globalConfig) return alert("กำลังโหลดข้อมูล...");
       const realValue = val === 'A' ? globalConfig.config.labelDayA : globalConfig.config.labelDayB;
       const group = el.closest('.choice-group');
       if (el.classList.contains('active')) { selectedData.day = ""; el.classList.remove('active'); } 
@@ -351,7 +336,7 @@
     }
 
     function selectTime(val, el) {
-      if(!globalConfig) return alert("กำลังโหลดข้อมูล กรุณารอสักครู่");
+      if(!globalConfig) return alert("กำลังโหลดข้อมูล...");
       const realValue = val === '1' ? globalConfig.config.labelTime1 : globalConfig.config.labelTime2;
       const group = el.closest('.choice-group');
       if (el.classList.contains('active')) { selectedData.time = ""; el.classList.remove('active'); } 
@@ -374,26 +359,19 @@
     function renderStats(stats) {
       if (!stats) return;
       document.getElementById("total-reg").innerText = stats.total;
-      
-      // Calculate max percentages to highlight the winner
       const maxDayVal = Math.max(stats.dayA, stats.dayB);
       const maxTimeVal = Math.max(stats.time1, stats.time2);
-
       updateBar("bar-dayA", "txt-dayA", stats.dayA, stats.total, maxDayVal > 0 && stats.dayA === maxDayVal);
       updateBar("bar-dayB", "txt-dayB", stats.dayB, stats.total, maxDayVal > 0 && stats.dayB === maxDayVal);
       updateBar("bar-time1", "txt-time1", stats.time1, stats.total, maxTimeVal > 0 && stats.time1 === maxTimeVal);
       updateBar("bar-time2", "txt-time2", stats.time2, stats.total, maxTimeVal > 0 && stats.time2 === maxTimeVal);
     }
-
     function updateBar(barId, txtId, val, total, isMax) {
       let pct = total === 0 ? 0 : Math.round((val / total) * 100);
       document.getElementById(barId).style.width = pct + "%";
-      
       const txtEl = document.getElementById(txtId);
       txtEl.innerText = pct + "% (" + val + " คน)";
-      
-      if(isMax) txtEl.classList.add('stat-max-text');
-      else txtEl.classList.remove('stat-max-text');
+      if(isMax) txtEl.classList.add('stat-max-text'); else txtEl.classList.remove('stat-max-text');
     }
 
     function showModal(type, callback, extraData = null) {
@@ -409,20 +387,38 @@
 
         if (type === 'payment_choice') {
             icon.innerHTML = '💳'; title.innerText = 'เลือกรูปแบบการชำระเงิน';
-            desc.innerHTML = 'คุณสามารถเลือกจองสิทธิ์ก่อน (20%) <br>หรือชำระเต็มจำนวน (100%)';
+            desc.innerHTML = 'ท่านสามารถเลือกชำระเต็มจำนวนเพื่อล็อคสิทธิ์ทันที <br>หรือชำระมัดจำก่อน';
             const fullPrice = extraData.price;
             const depositPrice = Math.ceil(fullPrice * 0.2);
+            // Updated Psychology: Recommend 100%
             contentExtra.innerHTML = `
-                <div class="pay-choice-btn" onclick="selectPaymentType('deposit', ${depositPrice}, ${fullPrice})"><span class="pay-choice-title">จองสิทธิ์ (มัดจำ 20%) <span class="pay-choice-badge">แนะนำ</span></span><span class="pay-choice-desc">ชำระเพียง <b>${depositPrice.toLocaleString()}</b> บาท เพื่อล็อคที่นั่ง</span></div>
-                <div class="pay-choice-btn" onclick="selectPaymentType('full', ${fullPrice}, ${fullPrice})"><span class="pay-choice-title">ชำระเต็มจำนวน (100%)</span><span class="pay-choice-desc">ชำระยอด <b>${fullPrice.toLocaleString()}</b> บาท</span></div>`;
+                <div class="pay-choice-btn recommended" onclick="selectPaymentType('full', ${fullPrice}, ${fullPrice})">
+                    <span class="pay-choice-title">ชำระเต็มจำนวน (100%) <span class="pay-choice-badge">แนะนำ! ล็อคที่นั่งชัวร์</span></span>
+                    <span class="pay-choice-desc">ชำระยอด <b>${fullPrice.toLocaleString()}</b> บาท (จบในครั้งเดียว)</span>
+                </div>
+                <div class="pay-choice-btn" onclick="selectPaymentType('deposit', ${depositPrice}, ${fullPrice})">
+                    <span class="pay-choice-title">จองสิทธิ์ (มัดจำ 20%)</span>
+                    <span class="pay-choice-desc">ชำระเพียง <b>${depositPrice.toLocaleString()}</b> บาท เพื่อจองสิทธิ์ไว้ก่อน</span>
+                </div>`;
             const btnCancel = document.createElement('button'); btnCancel.className = 'modal-btn btn-cancel'; btnCancel.innerText = 'ยกเลิก'; btnCancel.onclick = function() { overlay.style.display = 'none'; }; actions.appendChild(btnCancel);
-        } else if (type === 'duplicate_pending') {
-            icon.innerHTML = '⚠️'; title.innerText = 'พบข้อมูลเดิมในระบบ'; desc.innerHTML = 'เบอร์โทรศัพท์นี้ลงทะเบียนไว้แล้วแต่ยังไม่ได้ชำระเงิน<br>ต้องการดำเนินการต่อหรือไม่?';
-            const btnConfirm = document.createElement('button'); btnConfirm.className = 'modal-btn btn-confirm'; btnConfirm.innerText = 'ดำเนินการต่อ'; btnConfirm.onclick = function() { overlay.style.display = 'none'; callback(true); };
-            const btnCancel = document.createElement('button'); btnCancel.className = 'modal-btn btn-cancel'; btnCancel.innerText = 'ยกเลิก'; btnCancel.onclick = function() { overlay.style.display = 'none'; callback(false); location.reload(); };
-            actions.appendChild(btnCancel); actions.appendChild(btnConfirm);
-        } else if (type === 'duplicate_paid') {
-            icon.innerHTML = '✅'; title.innerText = 'ชำระเงินเรียบร้อยแล้ว'; desc.innerHTML = 'ท่านได้ชำระเงินแล้ว สามารถเข้ากลุ่มเรียนได้ทันที';
+        } 
+        else if (type === 'existing_data_redirect') {
+            icon.innerHTML = '⚠️'; title.innerText = 'พบข้อมูลในระบบ'; 
+            desc.innerHTML = 'เบอร์โทรศัพท์นี้มีการลงทะเบียนแล้ว<br>กรุณาตรวจสอบสถานะเพื่อดำเนินการต่อ';
+            const btnCheck = document.createElement('button'); btnCheck.className = 'modal-btn btn-confirm'; btnCheck.innerText = 'ไปที่ตรวจสอบสถานะ'; 
+            btnCheck.onclick = function() { 
+                overlay.style.display = 'none'; 
+                document.getElementById('search-phone').value = extraData.phone;
+                window.scrollTo(0,0);
+                // Highlight search box
+                document.querySelector('.search-card').style.border = "2px solid #FF4D4F";
+                setTimeout(() => document.querySelector('.search-card').style.border = "none", 2000);
+                setTimeout(() => document.querySelector('.search-card').style.borderLeft = "6px solid #0072FF", 2000);
+            };
+            actions.appendChild(btnCheck);
+        }
+        else if (type === 'duplicate_paid') {
+            icon.innerHTML = '✅'; title.innerText = 'ชำระเงินเรียบร้อยแล้ว'; desc.innerHTML = 'ท่านได้ชำระเงินครบถ้วนแล้ว สามารถเข้ากลุ่มเรียนได้ทันที';
             const btnLine = document.createElement('a'); btnLine.className = 'modal-btn btn-line'; btnLine.innerText = 'เข้ากลุ่มไลน์'; btnLine.href = 'https://line.me/ti/g/fmMXxuHaw-'; btnLine.target = '_blank'; actions.appendChild(btnLine);
         } else if (type === 'not_found') {
             icon.innerHTML = '❌'; title.innerText = 'ไม่พบข้อมูล'; desc.innerHTML = 'ไม่พบเบอร์โทรศัพท์นี้ หรืออาจหมดเวลาชำระเงินแล้ว';
@@ -441,9 +437,12 @@
                 const d = res.data; globalRowID = d.rowid; globalFullPrice = d.fullPrice;
                 if (d.rowStatus === "Paid") showModal('duplicate_paid');
                 else if (d.rowStatus === "Booking") {
-                    currentPaymentType = 'remaining'; setupPaymentPage(d.remaining); showStep('step-payment');
-                    document.getElementById('pay-label').innerHTML = "ชำระส่วนที่เหลือ (80%)";
-                    alert(`✅ พบข้อมูลการจองของคุณ ${d.fullname}\nกรุณาชำระยอดที่เหลือ: ${d.remaining} บาท`);
+                    currentPaymentType = 'remaining'; 
+                    // ใช้ยอด Remaining จริงจากระบบ
+                    setupPaymentPage(d.remaining); 
+                    showStep('step-payment');
+                    document.getElementById('pay-label').innerHTML = `ชำระส่วนที่เหลือ (จ่ายแล้ว ${d.paidAmount})`;
+                    alert(`✅ พบข้อมูลการจองของคุณ ${d.fullname}\nยอดคงเหลือที่ต้องชำระ: ${d.remaining} บาท`);
                 } else if (d.rowStatus === "Pending") showModal('payment_choice', null, { price: d.fullPrice });
             } else showModal('not_found');
         }).catch(() => { document.getElementById('loading').style.display = 'none'; alert("Connection Error"); });
@@ -481,16 +480,14 @@
       fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: 'register', form: form, forceUpdate: isForceUpdate, paymentType: 'pending_choice' }) })
       .then(res => res.json()).then(res => {
         document.getElementById('loading').style.display = 'none';
-        if (res.status === "EXISTING_FOUND") showModal('duplicate_pending', function(c) { if(c) submitForm(true); });
-        else if (res.status === "ALREADY_PAID") showModal('duplicate_paid');
+        
+        // Strict Check: ถ้าเจอข้อมูลซ้ำ ให้ไป Check Status อย่างเดียว
+        if (res.status === "EXISTING_DATA") {
+            showModal('existing_data_redirect', null, { phone: phoneInput });
+        }
         else if (res.rowid) {
             globalRowID = res.rowid; globalFullPrice = res.price;
-            if (res.rowStatus === "Booking") {
-                 currentPaymentType = 'remaining';
-                 setupPaymentPage(Math.ceil(globalFullPrice * 0.8));
-                 document.getElementById('pay-label').innerHTML = "ชำระส่วนที่เหลือ (80%)";
-                 showStep('step-payment');
-            } else showModal('payment_choice', null, { price: globalFullPrice });
+            showModal('payment_choice', null, { price: globalFullPrice });
         } else alert("Error: " + res.message);
       }).catch(err => { document.getElementById('loading').style.display = 'none'; alert("Error: " + err.message); });
     }
@@ -506,9 +503,20 @@
       document.getElementById('price-normal').innerText = cfg.priceNormal.toLocaleString() + ".-";
       const tSuper = document.getElementById('tier-super'), tEarly = document.getElementById('tier-early'), tNormal = document.getElementById('tier-normal');
       [tSuper, tEarly, tNormal].forEach(e => e.className = 'tier-item future');
-      if (paid < cfg.superLimit) { tSuper.className = 'tier-item active'; tSuper.querySelector('span:first-child').innerHTML += ` <span class="badge-stock">🔥 เหลือ ${cfg.superLimit - paid} สิทธิ์</span>`; }
-      else if (paid < cfg.earlyLimit) { tSuper.className = 'tier-item sold-out'; tEarly.className = 'tier-item active'; tEarly.querySelector('span:first-child').innerHTML += ` <span class="badge-stock">🔥 เหลือ ${cfg.earlyLimit - paid} สิทธิ์</span>`; }
-      else { tSuper.className = 'tier-item sold-out'; tEarly.className = 'tier-item sold-out'; tNormal.className = 'tier-item active'; }
+      
+      // Logic Limit
+      if (paid < cfg.superLimit) { 
+          tSuper.className = 'tier-item active'; 
+          tSuper.querySelector('span:first-child').innerHTML += ` <span class="badge-stock">🔥 เหลือ ${cfg.superLimit - paid} สิทธิ์</span>`; 
+      } else if (data.totalCount < cfg.earlyLimit) { // ใช้ Total Count เช็ค Early Bird ตาม Logic GAS
+          tSuper.className = 'tier-item sold-out'; 
+          tEarly.className = 'tier-item active'; 
+          tEarly.querySelector('span:first-child').innerHTML += ` <span class="badge-stock">🔥 เหลือ ${cfg.earlyLimit - data.totalCount} สิทธิ์</span>`; 
+      } else { 
+          tSuper.className = 'tier-item sold-out'; 
+          tEarly.className = 'tier-item sold-out'; 
+          tNormal.className = 'tier-item active'; 
+      }
     }
 
     function compressImage(file) {
@@ -541,7 +549,7 @@
         document.getElementById('loading').style.display='none';
         if(res.status==='success') {
             document.querySelector('#step-success h2').innerText = res.newStatus==="Booking"?"จองสิทธิ์สำเร็จ!":"ลงทะเบียนสำเร็จ!";
-            document.getElementById('success-msg').innerHTML = res.newStatus==="Booking"?"ได้รับยอดมัดจำแล้ว":"ได้รับข้อมูลเรียบร้อยแล้ว";
+            document.getElementById('success-msg').innerHTML = res.newStatus==="Booking"?"ได้รับยอดมัดจำแล้ว<br>กรุณารอตรวจสอบยอดที่เหลือ":"ได้รับข้อมูลเรียบร้อยแล้ว";
             showStep('step-success');
         } else { alert("Error: "+res.message); document.getElementById('btnConfirm').disabled=false; }
       } catch(e) { document.getElementById('loading').style.display='none'; alert("Error: "+e.message); document.getElementById('btnConfirm').disabled=false; }
